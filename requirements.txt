@@ -7,18 +7,19 @@ pyyaml>=6.0.0
 # Database
 sqlalchemy>=2.0.0
 pymysql>=1.1.0          # MariaDB/MySQL connector
-pyodbc>=5.1.0           # MSSQL connector (Jitbit import)
+pyodbc>=5.1.0           # MSSQL connector (Jitbit import, Faza 4+)
 
-# HTTP / scraping (MVP needs basic; rozszerzymy w kolejnych fazach)
+# Data processing
+pandas>=2.2.0           # CSV/TSV/XLSX parsing, type coercion
+openpyxl>=3.1.0         # XLSX engine for pandas
+
+# HTTP / scraping (do walidatorów w Fazie 3)
 httpx>=0.27.0
 requests>=2.32.0
 beautifulsoup4>=4.12.0
-
-# Polish business registers (część używana w Fazie 3)
-# Brak gotowych klientów PyPI dla wszystkich, używamy zwykłego httpx + REST
 
 # Reporting
 jinja2>=3.1.0
 
 # Dev tools (opcjonalne)
-ipython>=8.0.0          # interaktywny REPL do debugowania
+ipython>=8.0.0

@@ -1,0 +1,19 @@
+source: outscraper_gmaps
+
+file:
+  type: auto                          # auto-detect po rozszerzeniu (xlsx/csv/tsv)
+
+# Auto-mapping: nazwy kolumn w pliku (po normalizacji kropek na underscore)
+# muszą pasować do nazw kolumn w intel_raw_leads. Outscraper field
+# "email.emails_validator.status" → kolumna "email_emails_validator_status".
+auto_map:
+  enabled: true
+  normalize: dots_to_underscores
+
+# Pole z pliku które idzie do meta-kolumny source_external_id (unique dedup key)
+external_id_field: place_id
+
+# Defaulty dla wszystkich wierszy z tego importu (najniższy priorytet)
+defaults:
+  validation_status: new
+  
