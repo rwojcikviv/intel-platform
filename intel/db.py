@@ -51,7 +51,9 @@ def get_engine() -> Engine:
 
     connect_args: dict = {}
     if os.getenv("DB_SSL_DISABLED", "0") == "1":
-        connect_args["ssl"] = {"ssl_disabled": True}
+        # PyMySQL: ssl_disabled bezpośrednio (nie wewnątrz słownika 'ssl').
+        # Zenbox MariaDB nie wspiera SSL dla zdalnych połączeń.
+        connect_args["ssl_disabled"] = True
 
     _engine = create_engine(
         url,
