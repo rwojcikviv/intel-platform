@@ -12,7 +12,7 @@ from typing import Iterator
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
+from sqlalchemy.engine import Engine, URL
 from sqlalchemy.orm import Session, sessionmaker
 
 load_dotenv()
@@ -38,14 +38,25 @@ def get_engine() -> Engine:
             "Brak konfiguracji bazy. Sprawdź .env: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME"
         )
 
+    # URL.create() URL-encode'uje hasło automatycznie — bezpieczne dla znaków @ : / # itd.
+    url = URL.create(
+        drivername="mysql+pymysql",
+        username=user,
+        password=password,
+        host=host,
+        port=int(port),
+        database=name,
+        query={"charset": "utf8mb4"},
+    )
+
     connect_args: dict = {}
     if os.getenv("DB_SSL_DISABLED", "0") == "1":
         connect_args["ssl"] = {"ssl_disabled": True}
 
     _engine = create_engine(
-        f"mysql+pymysql://{user}:{password}@{host}:{port}/{name}?charset=utf8mb4",
+        url,
         pool_pre_ping=True,
-        pool_recycle=1800,      # recykluj połączenia po 30 min (Zenbox idle timeout)
+        pool_recycle=1800,
         echo=os.getenv("DB_ECHO", "0") == "1",
         connect_args=connect_args,
     )
@@ -68,4 +79,3 @@ def session_scope() -> Iterator[Session]:
         raise
     finally:
         session.close()
-        
